@@ -2,6 +2,7 @@ package me.andreisuruceanu.locationsservice.config;
 
 import me.andreisuruceanu.locationsservice.dao.CitiesTable;
 import me.andreisuruceanu.locationsservice.dao.CountriesTable;
+import me.andreisuruceanu.locationsservice.dao.CurrenciesTable;
 import me.andreisuruceanu.locationsservice.dao.StatesTable;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
@@ -32,7 +33,8 @@ public class HibernateConfig {
                 .setProperties(getProperties())
                 .addAnnotatedClass(CitiesTable.class)
                 .addAnnotatedClass(StatesTable.class)
-                .addAnnotatedClass(CountriesTable.class);
+                .addAnnotatedClass(CountriesTable.class)
+                .addAnnotatedClass(CurrenciesTable.class);
 
     }
 }

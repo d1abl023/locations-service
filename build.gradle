@@ -6,6 +6,13 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'idea'
+idea {
+    module {
+        sourceDirs += file("build/generated/sources/annotationProcessor/java/main")
+        generatedSourceDirs += file("build/generated/sources/annotationProcessor/java/main")
+    }
+}
 
 group 'me.andreisuruceanu'
 version '0.0.1-SNAPSHOT'

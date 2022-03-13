@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -20,29 +17,23 @@ import java.util.Date;
 @Table(name = "countries")
 public class CountriesTable implements Serializable {
     @Id
-    private Short id;
+    private Short id; //
     @Column
-    private String name;
+    private String name; //
     @Column
-    private String iso3;
+    private String iso3; ////
     @Column(name = "numeric_code")
-    private String numericCode;
+    private String numericCode; //
     @Column
-    private String iso2;
+    private String iso2; //
     @Column
-    private String phonecode;
+    private String phonecode; ////
     @Column
     private String capital;
     @Column
-    private String currency;
-    @Column(name = "currency_name")
-    private String currencyName;
-    @Column(name = "currency_symbol")
-    private String currencySymbol;
-    @Column
     private String tld;
     @Column(name = "native")
-    private String nativeName;
+    private String nativeName; //
     @Column
     private String region;
     @Column
@@ -67,5 +58,11 @@ public class CountriesTable implements Serializable {
     private Short flag;
     @Column(name = "wiki_data_id")
     private String wikiDataId;
+    @Column(name = "currency_id")
+    private Short currencyId;
+
+    @ManyToOne
+    @JoinColumn(name = "currency_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private CurrenciesTable currenciesTable;
 
 }

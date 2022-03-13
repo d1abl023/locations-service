@@ -22,10 +22,8 @@ public class CitiesTable implements Serializable {
     private String name;
     @Column(name = "state_id")
     private Short stateId;
-    @Column(name = "state_code")
-    private String stateCode;
-    @Column(name = "country_code")
-    private String countryCode;
+    @Column(name = "country_id")
+    private Short countryId;
     @Column
     private String latitude;
     @Column
@@ -40,8 +38,8 @@ public class CitiesTable implements Serializable {
     private String wikiDataId;
 
     @ManyToOne
-    @JoinColumn(columnDefinition = "country_id", referencedColumnName = "id", updatable = false, insertable = false)
+    @JoinColumn(name = "country_id", referencedColumnName = "id", updatable = false, insertable = false)
     private CountriesTable countriesTable;@ManyToOne
-    @JoinColumn(columnDefinition = "state_id", referencedColumnName = "id", updatable = false, insertable = false)
+    @JoinColumn(name = "state_id", referencedColumnName = "id", updatable = false, insertable = false)
     private StatesTable statesTable;
 }

@@ -22,8 +22,6 @@ public class StatesTable implements Serializable {
     private String name;
     @Column(name = "country_id")
     private Short countryId;
-    @Column(name = "country_code")
-    private Short countryCode;
     @Column(name = "fips_code")
     private Short fipsCode;
     @Column
@@ -44,6 +42,6 @@ public class StatesTable implements Serializable {
     private String wikiDataId;
 
     @ManyToOne
-    @JoinColumn(columnDefinition = "country_id", referencedColumnName = "id", updatable = false, insertable = false)
+    @JoinColumn(name = "country_id", referencedColumnName = "id", updatable = false, insertable = false)
     private CountriesTable countriesTable;
 }
