@@ -17,6 +17,12 @@ idea {
 group 'me.andreisuruceanu'
 version '0.0.1-SNAPSHOT'
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'me.andreisuruceanu.locationsservice.LocationsServiceApplication'
+    }
+}
+
 repositories {
     mavenCentral()
 }
@@ -61,4 +67,12 @@ dependencies {
 //
 //    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
 
+}
+
+//bootJar {
+//    archiveClassifier.set('boot')
+//}
+
+jar {
+    archiveClassifier.set('')
 }
