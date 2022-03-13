@@ -1,7 +1,18 @@
+springBootVersion = '2.6.2'
+springCloudVersion = "3.0.3"
+
 buildscript {
     ext {
         springBootVersion = "2.2.8.RELEASE"
         springCloudVersion = "2020.0.0"
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
     }
 }
 
@@ -31,8 +42,6 @@ test {
     useJUnitPlatform()
 }
 
-springBootVersion = '2.6.2'
-springCloudVersion = "3.0.3"
 
 dependencies {
 //    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:${springCloudVersion}"
