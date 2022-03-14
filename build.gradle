@@ -1,12 +1,21 @@
-buildscript {
-    ext {
-        springBootVersion = "2.2.8.RELEASE"
-        springCloudVersion = "2020.0.0"
-    }
+plugins {
+    id 'application'
+    id 'org.springframework.boot' version '2.6.4'
+    id 'idea'
 }
 
-apply plugin: 'java'
-apply plugin: 'idea'
+bootJar {
+    archiveClassifier = ''
+}
+
+jar {
+    enabled = false
+}
+
+repositories {
+    mavenCentral()
+}
+
 idea {
     module {
         sourceDirs += file("build/generated/sources/annotationProcessor/java/main")
@@ -17,62 +26,39 @@ idea {
 group 'me.andreisuruceanu'
 version '0.0.1-SNAPSHOT'
 
-jar {
-    manifest {
-        attributes 'Main-Class': 'me.andreisuruceanu.locationsservice.LocationsServiceApplication'
-    }
-}
-
-repositories {
-    mavenCentral()
-}
+sourceCompatibility = 11
+targetCompatibility = 11
 
 test {
     useJUnitPlatform()
 }
 
-springBootVersion = '2.6.2'
-springCloudVersion = "3.0.3"
-
 dependencies {
-//    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:${springCloudVersion}"
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest:2.6.4'
 
-    implementation "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-data-rest:${springBootVersion}"
+    implementation 'org.springframework.security:spring-security-config:5.6.2'
+    implementation 'org.springframework.security:spring-security-core:5.6.2'
+    implementation 'org.springframework.security:spring-security-web:5.6.2'
 
-    implementation 'org.springframework.security:spring-security-config:5.5.2'
-    implementation 'org.springframework.security:spring-security-core:5.5.2'
-    implementation 'org.springframework.security:spring-security-web:5.5.2'
-
-    implementation 'org.springframework.kafka:spring-kafka:2.8.1'
-
-    implementation 'org.hibernate:hibernate-core:5.6.3.Final'
+    implementation 'org.hibernate:hibernate-core:5.6.5.Final'
     implementation 'com.vladmihalcea:hibernate-types-55:2.14.0'
-    implementation 'org.postgresql:postgresql:42.3.1'
-    implementation 'com.nimbusds:nimbus-jose-jwt:9.15.2'
-    implementation 'com.google.code.gson:gson:2.8.9'
-    implementation 'redis.clients:jedis:4.0.0'
+    implementation 'org.postgresql:postgresql:42.3.3'
+    implementation 'com.nimbusds:nimbus-jose-jwt:9.21'
+    implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     compileOnly 'org.projectlombok:lombok:1.18.22'
-    compileOnly 'org.hibernate:hibernate-jpamodelgen:5.6.3.Final'
+    compileOnly 'org.hibernate:hibernate-jpamodelgen:5.6.5.Final'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
-    annotationProcessor 'org.hibernate:hibernate-jpamodelgen:5.6.3.Final'
+    annotationProcessor 'org.hibernate:hibernate-jpamodelgen:5.6.5.Final'
 
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.4'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.1'
+    jar {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
-//    testCompileOnly 'org.projectlombok:lombok:1.18.20'
-//
-//    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
-
-}
-
-//bootJar {
-//    archiveClassifier.set('boot')
-//}
-
-jar {
-    archiveClassifier.set('')
+        from {
+            configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+        }
+    }
 }
