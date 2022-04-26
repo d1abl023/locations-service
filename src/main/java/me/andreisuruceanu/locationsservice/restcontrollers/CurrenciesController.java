@@ -17,7 +17,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @RestController
-@RequestMapping("/currencies")
+@RequestMapping("/locations/currencies")
 public class CurrenciesController {
 
     @GetMapping("/all")

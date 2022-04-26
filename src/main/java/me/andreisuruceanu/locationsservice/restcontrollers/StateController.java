@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/states")
+@RequestMapping("/locations/states")
 public class StateController {
     @GetMapping("/all")
     public ResponseEntity<List<? extends ShortStateDescription>> getAllStates(@RequestParam DescriptionType type) {

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/countries")
+@RequestMapping("/locations/countries")
 public class CountriesController {
 
     @GetMapping("/all")
