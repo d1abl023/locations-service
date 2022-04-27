@@ -52,13 +52,13 @@ public class CityController {
     }
 
     @GetMapping("/by-country-id")
-    public ResponseEntity<? extends ShortCityDescription> getCityByCountryId(@RequestParam DescriptionType type,
+    public ResponseEntity<List<? extends ShortCityDescription>> getCityByCountryId(@RequestParam DescriptionType type,
                                                                              @RequestParam Integer cuid) {
         try (Session session = HibernateService.getSessionFactory().openSession()) {
             ISelectCityQueryBuilder builder = getBuilder(type, session);
             builder.multiselect().setCountryId(cuid);
 
-            return ResponseEntity.ok(session.createQuery(builder.getQuery()).getSingleResult());
+            return ResponseEntity.ok(session.createQuery(builder.getQuery()).getResultList());
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().build();

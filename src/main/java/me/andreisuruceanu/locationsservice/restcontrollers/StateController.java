@@ -50,11 +50,11 @@ public class StateController {
         }
     }
     @GetMapping("/by-country-id")
-    public ResponseEntity<? extends ShortStateDescription> getStateByCountryId(@RequestParam DescriptionType type, @RequestParam Short id) {
+    public ResponseEntity<List<? extends ShortStateDescription>> getStateByCountryId(@RequestParam DescriptionType type, @RequestParam Short cuid) {
         try (Session session = HibernateService.getSessionFactory().openSession()) {
             ISelectStateQueryBuilder builder = getBuilder(type, session);
-            builder.multiselect().setCountryId(id);
-            return ResponseEntity.ok(session.createQuery(builder.getQuery()).getSingleResult());
+            builder.multiselect().setCountryId(cuid);
+            return ResponseEntity.ok(session.createQuery(builder.getQuery()).getResultList());
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
