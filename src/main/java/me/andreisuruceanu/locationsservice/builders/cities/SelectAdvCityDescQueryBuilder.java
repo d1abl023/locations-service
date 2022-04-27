@@ -8,8 +8,7 @@ import org.hibernate.Session;
 import javax.persistence.criteria.Join;
 
 public class SelectAdvCityDescQueryBuilder extends SelectShortCityDescQueryBuilder {
-    protected Join<CitiesTable, CountriesTable> countriesTable;
-    protected Join<CitiesTable, StatesTable> statesTable;
+
 
     public SelectAdvCityDescQueryBuilder(Session session){
         super();

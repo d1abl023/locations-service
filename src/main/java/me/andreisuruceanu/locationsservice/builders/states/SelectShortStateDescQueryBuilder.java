@@ -46,6 +46,12 @@ public class SelectShortStateDescQueryBuilder implements ISelectStateQueryBuilde
     }
 
     @Override
+    public ISelectStateQueryBuilder setCountryId(Short id) {
+        this.query.where(builder.equal(countriesTable.get(CountriesTable_.ID), id));
+        return this;
+    }
+
+    @Override
     public CriteriaQuery<? extends ShortStateDescription> getQuery() {
         return this.query;
     }

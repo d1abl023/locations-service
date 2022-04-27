@@ -9,6 +9,7 @@ public interface ISelectStateQueryBuilder {
     ISelectStateQueryBuilder multiselect();
 
     ISelectStateQueryBuilder setExpectedId(Short id);
+    ISelectStateQueryBuilder setCountryId(Short id);
 
     CriteriaQuery<? extends ShortStateDescription> getQuery();
 }

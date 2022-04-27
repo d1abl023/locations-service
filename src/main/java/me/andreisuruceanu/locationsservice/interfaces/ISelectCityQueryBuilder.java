@@ -8,6 +8,8 @@ public interface ISelectCityQueryBuilder {
     ISelectCityQueryBuilder multiselect();
 
     ISelectCityQueryBuilder setExpectedId(Integer id);
+    ISelectCityQueryBuilder setCountryId(Integer id);
+    ISelectCityQueryBuilder setStateId(Integer id);
 
     CriteriaQuery<? extends ShortCityDescription> getQuery();
 }

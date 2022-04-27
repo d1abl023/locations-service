@@ -21,14 +21,14 @@ public class CityController {
 
     @GetMapping("/all")
     public ResponseEntity<List<? extends ShortCityDescription>> getAllCities(@RequestParam DescriptionType type) {
-        try(Session session = HibernateService.getSessionFactory().openSession()){
+        try (Session session = HibernateService.getSessionFactory().openSession()) {
             ISelectCityQueryBuilder builder = getBuilder(type, session);
             builder.multiselect();
             return ResponseEntity.ok(session.createQuery(builder.getQuery()).getResultList());
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
@@ -37,7 +37,7 @@ public class CityController {
     @GetMapping("/by-id")
     public ResponseEntity<? extends ShortCityDescription> getCityById(@RequestParam DescriptionType type,
                                                                       @RequestParam Integer id) {
-        try(Session session = HibernateService.getSessionFactory().openSession()){
+        try (Session session = HibernateService.getSessionFactory().openSession()) {
             ISelectCityQueryBuilder builder = getBuilder(type, session);
             builder.multiselect().setExpectedId(id);
 
@@ -45,7 +45,24 @@ public class CityController {
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
-        } catch (Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/by-country-id")
+    public ResponseEntity<? extends ShortCityDescription> getCityByCountryId(@RequestParam DescriptionType type,
+                                                                             @RequestParam Integer cuid) {
+        try (Session session = HibernateService.getSessionFactory().openSession()) {
+            ISelectCityQueryBuilder builder = getBuilder(type, session);
+            builder.multiselect().setCountryId(cuid);
+
+            return ResponseEntity.ok(session.createQuery(builder.getQuery()).getSingleResult());
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
