@@ -41,6 +41,20 @@ public class CurrenciesController {
         }
     }
 
+    @GetMapping("/by-country-id")
+    public ResponseEntity<? extends ShortCurrencyDescription> getCurrencyByCountryId(@RequestParam DescriptionType type,
+                                                                                     @RequestParam Short cuid) {
+        try (Session session = HibernateService.getSessionFactory().openSession()) {
+            ISelectCurrencyQueryBuilder builder = getBuilder(type, session);
+            builder.multiselect();
+            builder.setExpectedCountryId(cuid);
+            return ResponseEntity.ok(session.createQuery(builder.getQuery()).getSingleResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     @GetMapping("/by-id")
     public ResponseEntity<CurrenciesTable> getCurrencyById(@RequestParam Short id) {
         try (Session session = HibernateService.getSessionFactory().openSession()) {

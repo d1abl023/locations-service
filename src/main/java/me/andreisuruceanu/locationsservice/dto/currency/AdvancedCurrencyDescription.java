@@ -9,11 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AdvancedCurrencyDescription extends ShortCurrencyDescription {
     private String currency;
-    private String currencyName;
-
-    public AdvancedCurrencyDescription(Short id, String currencySymbol, String currency, String currencyName) {
+    public AdvancedCurrencyDescription(Short id, String currencySymbol, String currency) {
         super(id, currencySymbol);
         this.currency = currency;
-        this.currencyName = currencyName;
     }
 }

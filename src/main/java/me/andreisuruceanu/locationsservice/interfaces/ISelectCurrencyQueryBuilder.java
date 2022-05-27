@@ -8,6 +8,7 @@ public interface ISelectCurrencyQueryBuilder {
     ISelectCurrencyQueryBuilder multiselect();
 
     ISelectCurrencyQueryBuilder setExpectedId(Short id);
+    ISelectCurrencyQueryBuilder setExpectedCountryId(Short cuid);
 
     CriteriaQuery<? extends ShortCurrencyDescription> getQuery();
 }

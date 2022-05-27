@@ -9,23 +9,18 @@ import me.andreisuruceanu.locationsservice.dto.currency.ShortCurrencyDescription
 import me.andreisuruceanu.locationsservice.interfaces.ISelectCurrencyQueryBuilder;
 import org.hibernate.Session;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 @NoArgsConstructor
 public class SelectShortCurrDescQueryBuilder implements ISelectCurrencyQueryBuilder {
     protected CriteriaBuilder builder;
     protected CriteriaQuery<? extends ShortCurrencyDescription> query;
-    protected Root<CountriesTable> countriesTable;
-    protected Join<CountriesTable, CurrenciesTable> currenciesTable;
+    protected Root<CurrenciesTable> currenciesTable;
 
     public SelectShortCurrDescQueryBuilder(Session session) {
         this.builder = session.getCriteriaBuilder();
         this.query = builder.createQuery(ShortCurrencyDescription.class);
-        this.countriesTable = this.query.from(CountriesTable.class);
-        this.currenciesTable = this.countriesTable.join(CountriesTable_.CURRENCIES_TABLE);
+        this.currenciesTable = this.query.from(CurrenciesTable.class);
     }
 
     @Override
@@ -40,6 +35,17 @@ public class SelectShortCurrDescQueryBuilder implements ISelectCurrencyQueryBuil
     @Override
     public ISelectCurrencyQueryBuilder setExpectedId(Short id) {
         this.query.where(builder.equal(currenciesTable.get(CurrenciesTable_.ID), id));
+        return this;
+    }
+
+    @Override
+    public ISelectCurrencyQueryBuilder setExpectedCountryId(Short cuid) {
+        Subquery<Short> subquery = this.query.subquery(Short.class);
+        Root<CountriesTable> countriesTable = subquery.from(CountriesTable.class);
+        subquery.select(countriesTable.get(CountriesTable_.CURRENCY_ID))
+                .where(this.builder.equal(countriesTable.get(CountriesTable_.ID), cuid));
+
+        this.query.where(builder.equal(currenciesTable.get(CurrenciesTable_.ID), subquery));
         return this;
     }
 
