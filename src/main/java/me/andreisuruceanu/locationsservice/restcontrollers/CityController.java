@@ -53,7 +53,7 @@ public class CityController {
 
     @GetMapping("/by-country-id")
     public ResponseEntity<List<? extends ShortCityDescription>> getCityByCountryId(@RequestParam DescriptionType type,
-                                                                             @RequestParam Integer cuid) {
+                                                                                   @RequestParam Integer cuid) {
         try (Session session = HibernateService.getSessionFactory().openSession()) {
             ISelectCityQueryBuilder builder = getBuilder(type, session);
             builder.multiselect().setCountryId(cuid);

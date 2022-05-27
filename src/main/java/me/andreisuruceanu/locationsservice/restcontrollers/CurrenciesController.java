@@ -1,7 +1,16 @@
 package me.andreisuruceanu.locationsservice.restcontrollers;
 
+import me.andreisuruceanu.locationsservice.builders.cities.SelectAdvCityDescQueryBuilder;
+import me.andreisuruceanu.locationsservice.builders.cities.SelectShortCityDescQueryBuilder;
+import me.andreisuruceanu.locationsservice.builders.currencies.SelectAdvCurrDescQueryBuilder;
+import me.andreisuruceanu.locationsservice.builders.currencies.SelectFullCurrDescQueryBuilder;
+import me.andreisuruceanu.locationsservice.builders.currencies.SelectShortCurrDescQueryBuilder;
 import me.andreisuruceanu.locationsservice.dao.CurrenciesTable;
 import me.andreisuruceanu.locationsservice.dao.CurrenciesTable_;
+import me.andreisuruceanu.locationsservice.dto.currency.ShortCurrencyDescription;
+import me.andreisuruceanu.locationsservice.enums.DescriptionType;
+import me.andreisuruceanu.locationsservice.interfaces.ISelectCityQueryBuilder;
+import me.andreisuruceanu.locationsservice.interfaces.ISelectCurrencyQueryBuilder;
 import me.andreisuruceanu.locationsservice.service.HibernateService;
 import org.hibernate.Session;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +30,11 @@ import java.util.List;
 public class CurrenciesController {
 
     @GetMapping("/all")
-    public ResponseEntity<List<CurrenciesTable>> getAllCurrencies() {
+    public ResponseEntity<List<? extends ShortCurrencyDescription>> getAllCurrencies(@RequestParam DescriptionType type) {
         try (Session session = HibernateService.getSessionFactory().openSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<CurrenciesTable> query = builder.createQuery(CurrenciesTable.class);
-            Root<CurrenciesTable> table = query.from(CurrenciesTable.class);
-            query.select(table);
-            return ResponseEntity.ok(session.createQuery(query).getResultList());
+            ISelectCurrencyQueryBuilder builder = getBuilder(type, session);
+            builder.multiselect();
+            return ResponseEntity.ok(session.createQuery(builder.getQuery()).getResultList());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
@@ -47,6 +54,23 @@ public class CurrenciesController {
         }catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    private ISelectCurrencyQueryBuilder getBuilder(DescriptionType type, Session session) {
+        switch (type) {
+            case SHORT: {
+                return new SelectShortCurrDescQueryBuilder(session);
+            }
+            case ADVANCED: {
+                return new SelectAdvCurrDescQueryBuilder(session);
+            }
+            case FULL: {
+                return new SelectFullCurrDescQueryBuilder(session);
+            }
+            default: {
+                throw new IllegalArgumentException("Unsupported entity type: " + type);
+            }
         }
     }
 }
